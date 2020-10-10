@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o .infra/kubernetes/
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: iris
+  name: iris
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      io.kompose.service: iris
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o .infra/kubernetes/
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: iris
+    spec:
+      shareProcessNamespace: true
+      containers:
+      - image: iris
+        name: iris
+        ports:
+        - containerPort: 51773
+        - containerPort: 52773
+        - containerPort: 53773
+        resources: {}
+        volumeMounts:
+        - mountPath: /irisdev/app
+          name: iris-claim0
+      restartPolicy: Always
+      volumes:
+      - name: iris-claim0
+        persistentVolumeClaim:
+          claimName: iris-claim0
+status: {}

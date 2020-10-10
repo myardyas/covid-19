@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o .infra/kubernetes/
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: iris
+  name: iris
+spec:
+  ports:
+  - name: "51773"
+    port: 51773
+    targetPort: 51773
+  - name: "52773"
+    port: 52773
+    targetPort: 52773
+  - name: "53773"
+    port: 53773
+    targetPort: 53773
+  selector:
+    io.kompose.service: iris
+  type: ClusterIP
+status:
+  loadBalancer: {}
