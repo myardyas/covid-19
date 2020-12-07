@@ -28,6 +28,7 @@ jobs:
     - name: Credentials helper
       run: |
         gcloud auth configure-docker
+        gcloud config set project ${PROJECT_ID}
 
     - name: Build
       run: |
