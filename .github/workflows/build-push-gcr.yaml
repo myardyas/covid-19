@@ -25,17 +25,8 @@ jobs:
         version: '290.0.1'
         service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
 
-    - name: Credentials helper
+    - name: Build & Publish
       run: |
         gcloud auth configure-docker
-        gcloud config set project ${PROJECT_ID}
-
-    - name: Build
-      run: |
-        gcloud builds submit --tag ${GCR_LOCATION}/${PROJECT_ID}/$(echo ${IMAGE_NAME,,} | tr '/' '-'):${GITHUB_SHA}
-
-#        docker build -t ${GCR_LOCATION}/${PROJECT_ID}/$(echo ${IMAGE_NAME,,} | tr '/' '-'):${GITHUB_SHA} .
-
-    - name: Publish
-      run: |
+        docker build -t ${GCR_LOCATION}/${PROJECT_ID}/$(echo ${IMAGE_NAME,,} | tr '/' '-'):${GITHUB_SHA} .
         docker push ${GCR_LOCATION}/${PROJECT_ID}/$(echo ${IMAGE_NAME,,} | tr '/' '-'):${GITHUB_SHA}
