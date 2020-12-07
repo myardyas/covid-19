@@ -28,5 +28,6 @@ jobs:
     - name: Build & Publish
       run: |
         gcloud auth configure-docker
-        docker build -t ${GCR_LOCATION}/${PROJECT_ID}/$(echo ${IMAGE_NAME,,} | tr '/' '-'):${GITHUB_SHA} .
-        docker push ${GCR_LOCATION}/${PROJECT_ID}/$(echo ${IMAGE_NAME,,} | tr '/' '-'):${GITHUB_SHA}
+        export TAG=${GCR_LOCATION}/${PROJECT_ID}/$(echo ${IMAGE_NAME,,} | tr '/' '-'):${GITHUB_SHA}
+        docker build --tag ${TAG} .
+        docker push ${TAG}
